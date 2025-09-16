@@ -3,6 +3,6 @@ This is the normal Bagnon addon but with a button to open the bank window(up arr
 
 I also consolidated Bagnon into a single addon(instead of five different addons). So if you already have Bagnon installed, you need to delete those folders.  
 
-PS: In the picture below, you can see the Clean_Up button in the topright(broom).
+Note: In the picture below, you can see the Clean_Up button in the topright(broom).
 
 <img width="432" height="287" alt="Image" src="https://github.com/user-attachments/assets/eb2fdd3e-5a9f-488c-b066-18235ad50914" />
