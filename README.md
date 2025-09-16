@@ -1,5 +1,5 @@
 # Bagnon
-This is the normal Bagnon addon but with a button to open the bank window(up arrow in topleft), and button to delete profiles(for deleted characters)(x button next to profile name).  
+This is the normal Bagnon addon but with a button to open the bank window(up arrow in topleft), and a button to delete profiles(for deleted characters)(x button next to profile name).  
 
 I also consolidated Bagnon into a single addon(instead of five different addons). So if you already have Bagnon installed, you need to delete those folders.  
 
