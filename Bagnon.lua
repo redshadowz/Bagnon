@@ -33,7 +33,7 @@ function Bagnon_IsInventoryBag(bagID)
 	return bagID == KEYRING_CONTAINER or (bagID >= 0 and bagID < 5)
 end
 function Bagnon_IsBankBag(bagID)
-	return bagID == -1 or (bagID > 4 and bagID < 11)
+	return bagID == -1 or (bagID and bagID > 4 and bagID < 11)
 end
 function Bagnon_FrameHasBag(frameName,bagID)
 	if not BagnonSets and BagnonSets[frameName] and BagnonSets[frameName].bags then return false end
