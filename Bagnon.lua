@@ -925,7 +925,7 @@ function BagnonMenu_SetAlpha(frame,alpha)
 end
 function BagnonMenu_SetScale(frame,scale)
 	BagnonSets[frame:GetName()].scale = scale
-	Infield.Scale(frame,scale)
+	Bagnon_Infield.Scale(frame,scale)
 	BagnonFrame_SavePosition(frame)
 end
 function BagnonMenuBG_OnClick(frame)
@@ -1166,7 +1166,7 @@ local function Load(eventFrame)
 	LoadVariables()
 	BagnonForever_LoadVariables()
 	ObtainLocalizedNames()
-	Infield.AddRescaleAction(function()
+	Bagnon_Infield.AddRescaleAction(function()
 		if Bagnon then BagnonFrame_Reposition(Bagnon) end
 		if Banknon then BagnonFrame_Reposition(Banknon) end
 	end)
@@ -1762,3 +1762,56 @@ function Banknon_UpdatePurchaseButtonVis(hide)
 	end
 	BagnonFrame_TrimToSize(Banknon)
 end
+
+-- Infield Functions
+local function RegisterScaleEvents()
+	Bagnon_InfieldUpdater:SetScript("OnEvent",function()
+		if this.currentScale ~= UIParent:GetScale() then
+			for _,action in pairs(Bagnon_Infield.rescaleList) do action() end
+			this.currentScale = UIParent:GetScale()
+		end
+	end)
+	Bagnon_InfieldUpdater:RegisterEvent("PLAYER_ENTERING_WORLD")
+	Bagnon_InfieldUpdater:RegisterEvent("CVAR_UPDATE")
+end
+local function GetAdjustedCoords(frame,nScale)
+	if not frame:GetLeft() and frame:GetTop() then return end
+	return frame:GetLeft() * frame:GetScale() / nScale, frame:GetTop() * frame:GetScale() / nScale
+end
+Bagnon_Infield = {rescaleList = {}}
+Bagnon_Infield.AddRescaleAction = function(funct) table.insert(Bagnon_Infield.rescaleList,funct) end
+Bagnon_Infield.Scale = function(frame,scale)
+	local x,y = GetAdjustedCoords(frame,scale)
+	frame:SetScale(scale)
+	if x and y then Bagnon_Infield.Place(frame, "TOPLEFT", UIParent, "BOTTOMLEFT", x, y) end
+end
+Bagnon_Infield.Place = function(frame,point,parent,relPoint,x,y)
+	frame:ClearAllPoints()
+	frame:SetPoint(point,parent,relPoint,x,y)
+	Bagnon_Infield.Reposition(frame,UIParent)
+end
+Bagnon_Infield.Reposition = function(frame,parent)
+	if frame:GetBottom() and frame:GetTop() and frame:GetLeft() and frame:GetRight() then
+		local xoff = 0
+		local yoff = 0
+		local ratio = frame:GetScale()
+		if frame:GetBottom() < 0 then
+			yoff = 0 - frame:GetBottom()
+		elseif frame:GetTop()  > (parent:GetTop() / ratio) then
+			yoff = (parent:GetTop() / ratio) - frame:GetTop()
+		end
+		if frame:GetLeft() < 0 then
+			xoff = 0  - frame:GetLeft()
+		elseif frame:GetRight()  > (parent:GetRight() / ratio) then
+			xoff = (parent:GetRight() / ratio) - frame:GetRight()
+		end
+		if xoff ~= 0 or yoff ~= 0 then
+			local x = frame:GetLeft() + xoff
+			local y = frame:GetTop() + yoff
+			frame:ClearAllPoints()
+			frame:SetPoint("TOPLEFT", parent, "BOTTOMLEFT", x , y)
+		end
+	end
+end
+CreateFrame("Frame","Bagnon_InfieldUpdater")
+RegisterScaleEvents()

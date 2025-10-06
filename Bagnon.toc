@@ -3,10 +3,6 @@
 ## Notes: Displays the player's inventory in a single frame.
 ## Author: Tuller
 ## Version: 6.10.22
-## Dependencies: 
-## OptionalDeps: KC_Items
 ## SavedVariables: BagnonSets,BagnonForeverData
 localization.lua
-lib\TLib.lua
-lib\Infield.lua
 Bagnon.xml
