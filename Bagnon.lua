@@ -1,3 +1,9 @@
+local DEFAULT_FRAME_LOCKED = 1
+local DEFAULT_BAG_COLS = 12
+local DEFAULT_BANK_COLS = 20
+local DEFAULT_SPACING = 2
+local minWidth = 120
+
 local currentPlayer = UnitName("player")
 local currentRealm = GetRealmName()
 local bToggleBag = ToggleBag
@@ -11,20 +17,15 @@ local bCloseAllBags = CloseAllBags
 local bToggleKeyring = ToggleKeyRing
 local UPDATE_DELAY = 0.3
 local FRAMESTRATA = {"LOW","MEDIUM","HIGH"}
-local DEFAULT_COLS = 12
-local DEFAULT_SPACING = 2
-local firstRun = nil
-local nameFilter
+local firstRun,nameFilter,bgn_atBank
 local bBagSlotButton_OnEnter,bMainBag_OnEnter,bKeyRingButton_OnEnter
 local bBagSlotButton_OnClick,bKeyRingButton_OnClick,bMainBag_OnClick
-local minWidth = 120
 local Blizz_GameTooltip_SetBagItem = GameTooltip.SetBagItem
 local Bliz_GameTooltip_SetLootItem = GameTooltip.SetLootItem
 local Bliz_SetHyperlink = GameTooltip.SetHyperlink
 local Bliz_ItemRefTooltip_SetHyperlink = ItemRefTooltip.SetHyperlink
 local Bliz_GameTooltip_SetLootRollItem = GameTooltip.SetLootRollItem
 local Bliz_GameTooltip_SetAuctionItem = GameTooltip.SetAuctionItem
-local bgn_atBank
 
 BagnonDB = {addon = "Bagnon_Forever"}
 
@@ -693,13 +694,13 @@ function BagnonFrame_Layout(frame,cols,space)
 	if not frame.size then return end
 
 	local frameName = frame:GetName()
-	if not BagnonSets[frameName].locked and firstRun then BagnonSets[frameName].locked = 1 end
+	if not BagnonSets[frameName].locked and firstRun then BagnonSets[frameName].locked = DEFAULT_FRAME_LOCKED end
 	if not cols then
-		if frameName == "Bagnon" then cols = DEFAULT_COLS
-		elseif frameName == "Banknon" then cols = 20
+		if frameName == "Bagnon" then cols = DEFAULT_BAG_COLS
+		elseif frameName == "Banknon" then cols = DEFAULT_BANK_COLS
 		end
 	end
-	if cols == DEFAULT_COLS then BagnonSets[frameName].cols = nil else BagnonSets[frameName].cols = cols end
+	if cols == DEFAULT_BAG_COLS then BagnonSets[frameName].cols = nil else BagnonSets[frameName].cols = cols end
 	if not space then space = DEFAULT_SPACING end
 	if space == DEFAULT_SPACING then BagnonSets[frameName].space = nil else BagnonSets[frameName].space = space end
 	local rows = math.ceil(frame.size / cols)
