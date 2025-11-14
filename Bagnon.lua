@@ -1193,12 +1193,14 @@ local function Load(eventFrame)
 end
 local function OnEvent()
 	if event == "BAG_UPDATE" or event == "BAG_UPDATE_COOLDOWN" then
-		if ShouldUpdateBag(Bagnon,arg1) then
-			BagnonFrame_Update(Bagnon,arg1)
-		elseif ShouldUpdateBag(Banknon,arg1) then
-			BagnonFrame_Update(Banknon,arg1)
+		if arg1 then
+			if ShouldUpdateBag(Bagnon,arg1) then
+				BagnonFrame_Update(Bagnon,arg1)
+			elseif ShouldUpdateBag(Banknon,arg1) then
+				BagnonFrame_Update(Banknon,arg1)
+			end
+			BagnonForever_SaveBagData(arg1)
 		end
-		BagnonForever_SaveBagData(arg1)
 	elseif event == "PLAYER_MONEY" then
 		BagnonForever_SavePlayerMoney()
 	elseif event == "PLAYER_LOGIN" then
