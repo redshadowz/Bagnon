@@ -1452,17 +1452,15 @@ function BagnonDBUI_ShowCharacterList(parentFrame)
 	for player in BagnonDB.GetPlayers() do
 		index = index + 1
 		local button = getglobal("BagnonDBUICharacterList"..index) or CreatePlayerButton(index,BagnonDBUICharacterList)
+		local deletebutton = getglobal("BagnonDBUICharacterList"..index.."DeleteButton") or CreateDeletePlayerButton(index,getglobal("BagnonDBUICharacterList"..index))
 		button:SetText(player)
 		if button:GetTextWidth() + 40 > width then width = button:GetTextWidth() + 40 end
 		if parentFrame.player == player then
 			button:SetChecked(true)
-			button:Show()
-			if getglobal("BagnonDBUICharacterList"..index.."DeleteButton") then getglobal("BagnonDBUICharacterList"..index.."DeleteButton"):Hide() end
 		else
 			button:SetChecked(false)
-			local deletebutton = getglobal("BagnonDBUICharacterList"..index.."DeleteButton") or CreateDeletePlayerButton(index,getglobal("BagnonDBUICharacterList"..index))
-			deletebutton:Show()
 		end
+		button:Show()
 	end
 	local i = index + 1
 	while getglobal("BagnonDBUICharacterList"..i) do
@@ -1472,7 +1470,12 @@ function BagnonDBUI_ShowCharacterList(parentFrame)
 	i = 0
 	for player in BagnonDB.GetPlayers() do
 		i = i + 1
-		if parentFrame.player ~= player then getglobal("BagnonDBUICharacterList"..i.."DeleteButton"):SetPoint("LEFT", getglobal("BagnonDBUICharacterList"..i), "LEFT", width-12, 0) end
+		if UnitName("player") ~= player then
+			getglobal("BagnonDBUICharacterList"..i.."DeleteButton"):SetPoint("LEFT", getglobal("BagnonDBUICharacterList"..i), "LEFT", width-12, 0)
+			getglobal("BagnonDBUICharacterList"..index.."DeleteButton"):Show()
+		else
+			getglobal("BagnonDBUICharacterList"..index.."DeleteButton"):Hide()
+		end
 	end
 	BagnonDBUICharacterList:SetHeight(12 + index * 19)
 	BagnonDBUICharacterList:SetWidth(width)
